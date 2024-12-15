@@ -10,7 +10,7 @@ import (
 func NewContactsHandler(t *template.Template, repo repository.ContactRepository) http.HandlerFunc {
 	return func(wr http.ResponseWriter, r *http.Request) {
 		var contacts []model.Contact
-		text := r.Form.Get("q'")
+		text := r.URL.Query().Get("q")
 
 		if len(text) > 0 {
 			contacts = repo.Search(text)
@@ -18,6 +18,9 @@ func NewContactsHandler(t *template.Template, repo repository.ContactRepository)
 			contacts = repo.All()
 		}
 
-		t.Execute(wr, contacts)
+		err := t.Execute(wr, contacts)
+		if err != nil {
+			panic(err)
+		}
 	}
 }
