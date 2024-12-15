@@ -5,8 +5,6 @@ import (
 	"net/http"
 )
 
-func init() {}
-
 func NewIndexHandlerX(t *template.Template) http.HandlerFunc {
 	return func(wr http.ResponseWriter, r *http.Request) {
 		t.Execute(wr, nil)
@@ -14,5 +12,5 @@ func NewIndexHandlerX(t *template.Template) http.HandlerFunc {
 }
 
 func NewIndexHandler(wr http.ResponseWriter, r *http.Request) {
-	http.Redirect(wr, r, "/contacts/", http.StatusFound)
+	http.Redirect(wr, r, "/contacts", http.StatusFound)
 }
