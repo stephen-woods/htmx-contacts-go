@@ -2,10 +2,36 @@
 {{define "content"}}
 <h1>Contacts and STuff</h1>
 
-<ul>
-  {{range .}}
-  <li>{{.First}} {{.Last}} {{.Email}} {{.Phone}}</li>
-  {{end}}
-</ul>
+<table>
+  <tr>
+    <th>First</th>
+    <th>Last</th>
+    <th>Phone</th>
+    <th>Email</th>
+  </tr>
+  <tbody>
+    {{range $contact := .Contacts}}
+    <tr>
+      <td>{{$contact.First}}</td>
+      <td>{{$contact.Last}}</td>
+      <td>{{$contact.Email}}</td>
+      <td>{{$contact.Phone}}</td>
+      <td>
+        <a href="/contacts/{{$contact.Id}}/edit">Edit</a>
+        <a href="/contacts/{{$contact.Id}}">View</a>
+      </td>
+    </tr>
+    {{end}}
+  </tbody>
+</table>
 
+<form action="/contacts">
+  <label for="search">Search Term</label>
+  <input id="search" type="search" name="q" autofocus value="{{.Q}}" />
+  <input type="submit" value="Search" />
+</form>
+
+<p>
+  <a href="/contacts/new">Add Contact</a>
+</p>
 {{end}}
