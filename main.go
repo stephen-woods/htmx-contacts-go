@@ -14,12 +14,9 @@ func main() {
 
 	contactRepo := repository.NewContactRepository()
 
-	templates := templates.Templates()
-	_ = templates
-
 	// http.Handle("GET /", routes.NewIndexHandler(templates["index"]))
 
-	http.HandleFunc("/contacts", routes.NewContactsHandler(templates["contacts"], contactRepo))
+	http.HandleFunc("/contacts", routes.NewContactsHandler(templates.Templates, contactRepo))
 	http.HandleFunc("/", routes.NewIndexHandler)
 
 	log.Println("App running on port: 3000")

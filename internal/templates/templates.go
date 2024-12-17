@@ -1,15 +1,23 @@
 package templates
 
-import "html/template"
+import (
+	"embed"
+	"html/template"
+)
 
-var templates map[string]*template.Template
+var (
+	//go:embed *.html
+	templateFS embed.FS
+
+	Templates *template.Template
+)
 
 func init() {
-	templates = make(map[string]*template.Template)
-	templates["index"] = template.Must(template.ParseFiles("internal/templates/index.html"))
-	templates["contacts"] = template.Must(template.ParseFiles("internal/templates/contacts.html"))
-}
-
-func Templates() map[string]*template.Template {
-	return templates
+	Templates = template.Must(
+		template.ParseFS(
+			templateFS,
+			"layout.html",
+			"*.html",
+		),
+	)
 }

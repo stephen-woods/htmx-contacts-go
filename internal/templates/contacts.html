@@ -1,3 +1,5 @@
+{{template "layout.html" .}} {{define "title"}}Contacts and STuff!!!{{end}}
+{{define "content"}}
 <h1>Contacts and STuff</h1>
 
 <ul>
@@ -5,3 +7,5 @@
   <li>{{.First}} {{.Last}} {{.Email}} {{.Phone}}</li>
   {{end}}
 </ul>
+
+{{end}}

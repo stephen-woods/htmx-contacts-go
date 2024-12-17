@@ -18,9 +18,9 @@ func NewContactsHandler(t *template.Template, repo repository.ContactRepository)
 			contacts = repo.All()
 		}
 
-		err := t.Execute(wr, contacts)
+		err := t.ExecuteTemplate(wr, "contacts.html", contacts)
 		if err != nil {
-			panic(err)
+			http.Error(wr, "Internal Server Error", http.StatusInternalServerError)
 		}
 	}
 }
