@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"htmx-contacts/internal/repository"
 	"htmx-contacts/internal/routes"
-	"htmx-contacts/internal/templates"
 	"log"
 	"net/http"
 )
@@ -16,8 +15,8 @@ func main() {
 
 	r := http.NewServeMux()
 
-	r.HandleFunc("GET /contacts/new", routes.HandleGetContactsNew(templates.GetContactsNew, contactRepo))
-	r.HandleFunc("GET /contacts", routes.HandleGetContacts(templates.GetContacts, contactRepo))
+	r.HandleFunc("GET /contacts/new", routes.HandleGetContactsNew(contactRepo))
+	r.HandleFunc("GET /contacts", routes.HandleGetContacts(contactRepo))
 	r.HandleFunc("GET /", routes.NewIndexHandler)
 
 	log.Println("App running on port: 3000")

@@ -1,10 +1,10 @@
 package routes
 
 import (
-	"fmt"
-	"html/template"
 	"htmx-contacts/internal/model"
 	"htmx-contacts/internal/repository"
+	"htmx-contacts/internal/templates"
+	"log"
 	"net/http"
 )
 
@@ -17,7 +17,7 @@ type ContactNewPageInfo struct {
 	Contact model.Contact
 }
 
-func HandleGetContacts(t *template.Template, repo repository.ContactRepository) http.HandlerFunc {
+func HandleGetContacts(repo repository.ContactRepository) http.HandlerFunc {
 	return func(wr http.ResponseWriter, r *http.Request) {
 		var info ContactPageInfo
 
@@ -29,20 +29,21 @@ func HandleGetContacts(t *template.Template, repo repository.ContactRepository) 
 			info.Contacts = repo.All()
 		}
 
-		err := t.ExecuteTemplate(wr, "contacts.html", info)
+		err := templates.GetContacts.ExecuteTemplate(wr, "contacts.html", info)
 		if err != nil {
+			log.Println(err)
 			http.Error(wr, "Internal Server Error", http.StatusInternalServerError)
 		}
 	}
 }
 
-func HandleGetContactsNew(t *template.Template, repo repository.ContactRepository) http.HandlerFunc {
+func HandleGetContactsNew(repo repository.ContactRepository) http.HandlerFunc {
 	return func(wr http.ResponseWriter, r *http.Request) {
 		var info ContactNewPageInfo
 
-		err := t.ExecuteTemplate(wr, "contacts_new.html", info)
+		err := templates.GetContactsNew.ExecuteTemplate(wr, "contacts_new.html", info)
 		if err != nil {
-			fmt.Println(err)
+			log.Println(err)
 			http.Error(wr, "Internal Server Error", http.StatusInternalServerError)
 		}
 	}
