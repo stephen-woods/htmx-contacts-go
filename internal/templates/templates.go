@@ -9,15 +9,16 @@ var (
 	//go:embed *.html
 	templateFS embed.FS
 
-	Templates *template.Template
+	GetContacts    *template.Template
+	GetContactsNew *template.Template
 )
 
 func init() {
-	Templates = template.Must(
-		template.ParseFS(
-			templateFS,
-			"layout.html",
-			"*.html",
-		),
+	GetContacts = template.Must(
+		template.ParseFS(templateFS, "layout.html", "contacts.html"),
+	)
+
+	GetContactsNew = template.Must(
+		template.ParseFS(templateFS, "layout.html", "contacts_new.html"),
 	)
 }

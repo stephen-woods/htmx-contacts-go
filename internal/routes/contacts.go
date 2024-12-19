@@ -1,6 +1,7 @@
 package routes
 
 import (
+	"fmt"
 	"html/template"
 	"htmx-contacts/internal/model"
 	"htmx-contacts/internal/repository"
@@ -12,7 +13,11 @@ type ContactPageInfo struct {
 	Contacts []model.Contact
 }
 
-func NewContactsHandler(t *template.Template, repo repository.ContactRepository) http.HandlerFunc {
+type ContactNewPageInfo struct {
+	Contact model.Contact
+}
+
+func HandleGetContacts(t *template.Template, repo repository.ContactRepository) http.HandlerFunc {
 	return func(wr http.ResponseWriter, r *http.Request) {
 		var info ContactPageInfo
 
@@ -26,6 +31,18 @@ func NewContactsHandler(t *template.Template, repo repository.ContactRepository)
 
 		err := t.ExecuteTemplate(wr, "contacts.html", info)
 		if err != nil {
+			http.Error(wr, "Internal Server Error", http.StatusInternalServerError)
+		}
+	}
+}
+
+func HandleGetContactsNew(t *template.Template, repo repository.ContactRepository) http.HandlerFunc {
+	return func(wr http.ResponseWriter, r *http.Request) {
+		var info ContactNewPageInfo
+
+		err := t.ExecuteTemplate(wr, "contacts_new.html", info)
+		if err != nil {
+			fmt.Println(err)
 			http.Error(wr, "Internal Server Error", http.StatusInternalServerError)
 		}
 	}
