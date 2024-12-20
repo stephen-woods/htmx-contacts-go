@@ -7,8 +7,6 @@ import (
 	"htmx-contacts/internal/templates"
 	"log"
 	"net/http"
-
-	"github.com/gorilla/mux"
 )
 
 func main() {
@@ -16,10 +14,11 @@ func main() {
 
 	contactRepo := repository.NewContactRepository()
 
-	r := mux.NewRouter()
-	r.HandleFunc("/contacts/new", routes.HandleGetContactsNew(templates.GetContactsNew, contactRepo)).Methods(http.MethodGet)
-	r.HandleFunc("/contacts", routes.HandleGetContacts(templates.GetContacts, contactRepo)).Methods(http.MethodGet)
-	r.HandleFunc("/", routes.NewIndexHandler).Methods(http.MethodGet)
+	r := http.NewServeMux()
+
+	r.HandleFunc("GET /contacts/new", routes.HandleGetContactsNew(templates.GetContactsNew, contactRepo))
+	r.HandleFunc("GET /contacts", routes.HandleGetContacts(templates.GetContacts, contactRepo))
+	r.HandleFunc("GET /", routes.NewIndexHandler)
 
 	log.Println("App running on port: 3000")
 	http.ListenAndServe(":3000", r)
