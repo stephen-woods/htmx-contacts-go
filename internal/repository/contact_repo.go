@@ -13,6 +13,7 @@ type ContactRepository interface {
 }
 
 type contactRepository struct {
+	lastId   int
 	contacts []model.Contact
 }
 
@@ -25,12 +26,21 @@ func NewContactRepository() ContactRepository {
 		panic(err)
 	}
 
+	// Read in the initial set of dummy contacts
 	var cs []model.Contact
 	err = json.Unmarshal(data, &cs)
 	if err != nil {
 		panic(err)
 	}
+
+	// Find the last ID in use
+	var lastId int
+	for _, c := range cs {
+		lastId = max(lastId, c.Id)
+	}
+
 	return &contactRepository{
+		lastId:   lastId,
 		contacts: cs,
 	}
 }
